@@ -6,82 +6,67 @@
     <title>Quadratic Solver & Grade Converter</title>
 </head>
 <body>
-<h2>Quadratic Equation Solver</h2>
+    <h1>Quadratic Equation Solver</h1>
     <p>Solve equations of the form: ax² + bx + c = 0</p>
+    
     <div>
         <label for="a">a:</label>
         <input type="number" id="a" step="any" placeholder="Enter value for a">
         <div id="errorA">Please enter a valid number for a (cannot be zero)</div>
     </div>
+    
     <div>
         <label for="b">b:</label>
         <input type="number" id="b" step="any" placeholder="Enter value for b">
         <div id="errorB">Please enter a valid number for b</div>
     </div>
+    
     <div>
         <label for="c">c:</label>
         <input type="number" id="c" step="any" placeholder="Enter value for c">
         <div id="errorC">Please enter a valid number for c</div>
     </div>
+    
     <button id="solveQuadratic">Solve Equation</button>
     <button id="resetQuadratic">Reset</button>
+    
     <div id="quadraticResult">
         <h3>Solution</h3>
+        <p id="discriminant"></p>
         <p id="natureRoots"></p>
         <p id="roots"></p>
     </div>
+    
     <hr>
+    
     <h2>Grade Converter</h2>
     <p>Convert a numeric score to a letter grade</p>
-
+    
     <div>
         <label for="score">Score (0-100):</label>
         <input type="number" id="score" min="0" max="100" placeholder="Enter score between 0 and 100">
         <div id="errorScore">Please enter a valid score between 0 and 100</div>
     </div>
-
+    
     <button id="convertGrade">Convert to Grade</button>
     <button id="resetGrade">Reset</button>
-
+    
     <div id="gradeResult">
         <h3>Grade Result</h3>
         <p id="gradeOutput"></p>
     </div>
+    
     <h3>Grade Scale</h3>
-    <table border="1">
-        <tr>
-            <th>Grade</th>
-            <th>Score Range</th>
-        </tr>
-        <tr>
-            <td>A+</td>
-            <td>85-100</td>
-        </tr>
-        <tr>
-            <td>A</td>
-            <td>75-84</td>
-        </tr>
-        <tr>
-            <td>B+</td>
-            <td>65-74</td>
-        </tr>
-        <tr>
-            <td>B</td>
-            <td>60-64</td>
-        </tr>
-        <tr>
-            <td>C+</td>
-            <td>55-59</td>
-        </tr>
-        <tr>
-            <td>C</td>
-            <td>50-54</td>
-        </tr>
-        <tr>
-            <td>D</td>
-            <td>0-49</td>
-        </tr>
-    </table>
+    <ul>
+        <li>A+: 85-100</li>
+        <li>A: 75-84</li>
+        <li>B+: 65-74</li>
+        <li>B: 60-64</li>
+        <li>C+: 55-59</li>
+        <li>C: 50-54</li>
+        <li>D: 0-49</li>
+    </ul>
+    
     <hr>
 
     <script>
@@ -140,22 +125,21 @@
                 root1 = -b / (2 * a);
                 root2 = root1;
             } else {
-                nature = "No real roots";
-                root1 = null;
-                root2 = null;
+                nature = "Two complex conjugate roots";
+                const realPart = (-b / (2 * a)).toFixed(2);
+                const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(2);
+                root1 = `${realPart} + ${imaginaryPart}i`;
+                root2 = `${realPart} - ${imaginaryPart}i`;
             }
             
             // Display results
+            document.getElementById('discriminant').textContent = `Discriminant (D) = ${discriminant}`;
             document.getElementById('natureRoots').textContent = `Nature of roots: ${nature}`;
             
             if (discriminant >= 0) {
-                if (discriminant === 0) {
-                    document.getElementById('roots').textContent = `x = ${root1.toFixed(4)}`;
-                } else {
-                    document.getElementById('roots').textContent = `x = ${root1.toFixed(4)} and x = ${root2.toFixed(4)}`;
-                }
+                document.getElementById('roots').textContent = `Roots: x₁ = ${root1.toFixed(4)}, x₂ = ${root2.toFixed(4)}`;
             } else {
-                document.getElementById('roots').textContent = `No real solutions`;
+                document.getElementById('roots').textContent = `Roots: x₁ = ${root1}, x₂ = ${root2}`;
             }
             
             document.getElementById('quadraticResult').style.display = 'block';
